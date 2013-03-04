@@ -14,11 +14,7 @@ class Cow
     'young' => ["..", "  "]
   }
   MAX_LINE_LENGTH = 36
-  
-  # ====================
-  # = Instance Methods =
-  # ====================
-  
+
   def initialize(options={})
     @cow_type = Cow.cows.include?(options[:cow]) ? options[:cow] : 'default'
     require "#{File.expand_path(File.dirname(__FILE__))}/cows/#{@cow_type}"
@@ -30,42 +26,39 @@ class Cow
   def say(message, balloon_type = 'say')
     construct_balloon(message, balloon_type) + "\n" + render_cow
   end
-  
+
   def think(message)
     construct_balloon(message, 'think') + "\n" + render_cow
   end
-  
+
   def set_eyes_and_tongue!
     @eyes, @tongue = construct_face(@face_type)
   end
-  
+
   alias_method :set_face, :face_type=
   def face_type=(face)
     set_face face
     set_eyes_and_tongue!
   end
-  
-  # =================
-  # = Class Methods =
-  # =================
+
   def self.faces
     FACE_TYPES.keys.sort
   end
-  
+
   def self.cows
     Dir.new("#{File.expand_path(File.dirname(__FILE__))}/cows/").entries.inject([]) { |files, cow_file| files << cow_file.gsub('.rb', '') if cow_file =~ /\.rb/; files }
   end
-  
+
   def self.say(message, type = 'default', face = 'default')
     Cow.new({ :cow => type, :face_type => face }).say(message)
   end
-  
+
   def self.think(message, type = 'default', face = 'default')
     Cow.new({ :cow => type, :face_type => face }).think(message)
   end
-  
+
   private
-  
+
   def construct_balloon(message, balloon_type)
     balloon_lines = ""
     @border = [] # up-left, up-right, down-left, down-right, left, right
@@ -102,11 +95,11 @@ class Cow
 
     return @balloon_lines
   end
-  
+
   def construct_face(type = 'default')
     FACE_TYPES[type || 'default']
   end
-  
+
   def format_message(message)
     message_lines = []
     if message.length > MAX_LINE_LENGTH
@@ -133,7 +126,7 @@ class Cow
 
     return message_lines
   end
-  
+
   def split_word(word)
     return [word] unless word.length > MAX_LINE_LENGTH
     lines = []
@@ -142,5 +135,5 @@ class Cow
     end
     return lines.compact
   end
-  
+
 end
