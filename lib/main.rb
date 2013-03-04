@@ -1,4 +1,4 @@
-require 'ruby_cowsay'
+require File.expand_path('../ruby_cowsay', __FILE__)
 
 turtle = Cow.new({:cow => 'turtle'})
 
