@@ -5,7 +5,7 @@ require 'ruby_cowsay/version'
 Gem::Specification.new do |gem|
   gem.name          = %q{ruby_cowsay}
   gem.version       = RubyCowsay::VERSION
-  
+
   gem.authors       = ["Patrick Tulskie"]
   gem.email         = ["patricktulskie@gmail.com"]
   gem.summary       = %q{Cowsay, written in ruby, as a gem.}

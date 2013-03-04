@@ -17,4 +17,20 @@ describe Cow do
       expect(cow.cow_type).to eq('bong')
     end
   end
+
+  context 'wants to change her spots' do
+    specify 'can change if the specified file to change to exists' do
+      cow = Cow.new
+      expect(cow.cow_type).to eq('default')
+      cow.cow_type = 'hellokitty'
+      expect(cow.cow_type).to eq('hellokitty')
+    end
+
+    specify 'does not change unless specified cow_type file is found' do
+      cow = Cow.new(cow: 'turtle')
+      expect(cow.cow_type).to eq('turtle')
+      cow.cow_type = 'filenotfound'
+      expect(cow.cow_type).to eq('turtle')
+    end
+  end
 end

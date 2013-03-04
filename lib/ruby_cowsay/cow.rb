@@ -1,7 +1,8 @@
 class Cow
-  
-  attr_accessor :cow_type, :eyes, :tongue, :face_type
-  
+
+  attr_accessor :eyes, :tongue, :face_type
+  attr_reader :cow_type
+
   FACE_TYPES = {
     'default' => ["oo", "  "],
     'borg' => ["==", "  "],
@@ -16,13 +17,23 @@ class Cow
   MAX_LINE_LENGTH = 36
 
   def initialize(options={})
-    @cow_type = Cow.cows.include?(options[:cow]) ? options[:cow] : 'default'
-    require "#{File.expand_path(File.dirname(__FILE__))}/cows/#{@cow_type}"
-    Cow.class_eval 'include CowTemplate'
+    self.cow_type = options[:cow]
     @face_type = Cow.faces.include?(options[:face_type]) ? options[:face_type] : 'default'
     set_eyes_and_tongue!
   end
-  
+
+  def cow_type=(cow_type)
+    if Cow.cows.include?(cow_type)
+      cow_type = cow_type
+    else
+      cow_type = @cow_type || 'default'
+    end
+    cow_file = "#{File.expand_path(File.dirname(__FILE__))}/cows/#{cow_type}.rb"
+    load cow_file
+    Cow.class_eval 'include CowTemplate'
+    @cow_type = cow_type
+  end
+
   def say(message, balloon_type = 'say')
     construct_balloon(message, balloon_type) + "\n" + render_cow
   end
